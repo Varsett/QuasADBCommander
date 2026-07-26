@@ -1,4 +1,4 @@
-# ADB File Manager (Adbfm)
+# Quas ADB Commander
 ### (English manual below)
 
 **Двухпанельный файловый менеджер для Meta Quest / Android устройств через ADB**
@@ -202,8 +202,7 @@ powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath
 ---
 
 ---
-# ADB File Manager (Adbfm)
-
+# Quas ADB Commander
 **Dual-panel file manager for Meta Quest / Android devices via ADB**
 
 Part of the [QUAS](https://github.com/Varsett/ADBFileManager) toolkit.

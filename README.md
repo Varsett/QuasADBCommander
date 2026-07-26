@@ -3,7 +3,7 @@
 
 **Двухпанельный файловый менеджер для Meta Quest / Android устройств через ADB**
 
-Часть инструментария [QUAS](https://github.com/Varsett/ADBFileManager).
+Часть инструментария [QUAS](https://github.com/Varsett/Quas).
 
 ---
 
@@ -191,7 +191,7 @@ powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath
 
 ## Ссылки
 
-- **GitHub / Документация:** https://github.com/Varsett/ADBFileManager
+- **GitHub / Документация:** https://github.com/Varsett/QuasADBCommander
 - **Скачать ADB Tools:** https://developer.android.com/tools/releases/platform-tools
 - **Скачать 7-Zip:** https://www.7-zip.org/download.html
 
@@ -205,7 +205,7 @@ powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath
 # Quas ADB Commander
 **Dual-panel file manager for Meta Quest / Android devices via ADB**
 
-Part of the [QUAS](https://github.com/Varsett/ADBFileManager) toolkit.
+Part of the [QUAS](https://github.com/Varsett/Quas) toolkit.
 
 ---
 
@@ -390,7 +390,7 @@ Files over **500 MB** require confirmation.
 
 ## Links
 
-- **GitHub / Documentation:** https://github.com/Varsett/ADBFileManager
+- **GitHub / Documentation:** https://github.com/Varsett/QuasADBCommander
 - **ADB Tools:** https://developer.android.com/tools/releases/platform-tools
 - **7-Zip:** https://www.7-zip.org/download.html
 

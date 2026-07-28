@@ -2,7 +2,7 @@
 
 **Двухпанельный файловый менеджер для Meta Quest / Android устройств через ADB**
 
-Часть инструментария [QUAS](https://github.com/Varsett/QuasADBCommander).
+Часть инструментария [QUAS](https://github.com/Varsett/Quas).
 
 ---
 
@@ -219,7 +219,7 @@ powershell -ExecutionPolicy Bypass -File "%~dp0adbcm.ps1" -ToolsPath "%toolspath
 
 **Dual-panel file manager for Meta Quest / Android devices via ADB**
 
-Part of the [QUAS](https://github.com/Varsett/QuasADBCommander) toolkit.
+Part of the [QUAS](https://github.com/Varsett/Quas) toolkit.
 
 ---
 

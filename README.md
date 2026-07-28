@@ -1,9 +1,8 @@
 # Quas ADB Commander
-### (English manual below)
 
 **Двухпанельный файловый менеджер для Meta Quest / Android устройств через ADB**
 
-Часть инструментария [QUAS](https://github.com/Varsett/Quas).
+Часть инструментария [QUAS](https://github.com/Varsett/QuasADBCommander).
 
 ---
 
@@ -12,7 +11,8 @@
 - Двухпанельный интерфейс: PC (слева) и Android (справа)
 - Просмотр, копирование, перемещение, переименование, удаление файлов на обоих устройствах
 - Встроенный редактор текста и скриптов с подсветкой синтаксиса
-- Поддержка архивов (7z, zip, rar, gz, tar...) через 7z.exe
+- Поддержка архивов через 7z.exe (zip, 7z, rar, gz, tar, bz2, xz, cab, iso)
+- **Поддержка многотомных архивов** (.7z.001/.002, .part1.rar/.part2.rar, .z01/.z02, .001/.002)
 - Установка APK с автоматическим копированием OBB
 - Предпросмотр медиафайлов с Android (видео, фото, аудио)
 - Поиск с поддержкой подстановочных символов
@@ -34,31 +34,31 @@
 
 ## Установка
 
-1. Поместите `adbfm.ps1` в любую папку на ПК
+1. Поместите `adbcm.ps1` в любую папку на ПК
 2. Положите рядом `adb.exe`, `aapt2.exe`, `7z.exe`, `7z.dll`
    - или укажите путь через параметр `-ToolsPath`
    - или добавьте в `%PATH%`
    - или задайте переменную среды `%myfiles%`
-3. Подключите Quest/Android через USB с включённой отладкой
+3. Подключите Quest/Android через USB с включённой USB-отладкой
 
 ---
 
 ## Запуск
 
 ```batch
-powershell -ExecutionPolicy Bypass -File adbfm.ps1
+powershell -ExecutionPolicy Bypass -File adbcm.ps1
 ```
 
 С параметрами:
 ```batch
-powershell -ExecutionPolicy Bypass -File adbfm.ps1 -ToolsPath "C:\Tools" -WorkDir "D:\Temp"
+powershell -ExecutionPolicy Bypass -File adbcm.ps1 -ToolsPath "C:\Tools" -WorkDir "D:\Temp"
 ```
 
 Рекомендуемый bat-файл запуска:
 ```batch
 set toolspath=%~dp0
 set workdir=%TEMP%
-powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath%" -WorkDir "%workdir%"
+powershell -ExecutionPolicy Bypass -File "%~dp0adbcm.ps1" -ToolsPath "%toolspath%" -WorkDir "%workdir%"
 ```
 
 ---
@@ -115,7 +115,7 @@ powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath
 | Open with default | Открыть системным приложением |
 | Install APK | Установить APK + автокопирование OBB |
 | Copy | Отметить + скопировать в буфер обмена |
-| Paste | Вставить (все направления: PC↔Android, PC→PC, Android→Android) |
+| Paste | Вставить (PC↔Android, PC→PC, Android→Android) |
 | Unpack archive | Распаковать архив на PC или Android |
 | Pack selected | Запаковать отмеченное в `.7z` |
 
@@ -125,7 +125,7 @@ powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath
 
 Архивы открываются двойным кликом или Enter — отображаются как виртуальные папки.
 
-**Внутри архива:**
+### Внутри архива
 
 | Действие | Результат |
 |----------|-----------|
@@ -135,11 +135,27 @@ powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath
 | `*` затем `F5` | Отметить всё + извлечь всё |
 | `[Close Archive]` | Выйти из архива или подняться на уровень выше |
 
-**Контекстное меню на файле архива:**
+### Контекстное меню на файле архива
 - **Unpack archive** — распаковать ВСЁ в указанную папку PC (путь редактируется) или в текущую папку Android (создаётся подпапка с именем архива)
 - **Pack selected** — запаковать отмеченные элементы в `.7z` в текущей папке
 
-**Поддерживаемые форматы:** `zip 7z rar gz tar bz2 xz cab iso tgz`
+### Поддерживаемые форматы
+`zip 7z rar gz tar bz2 xz cab iso tgz`
+
+---
+
+## Многотомные архивы
+
+Многотомные (разделённые) архивы поддерживаются полностью и раскрашиваются так же как обычные.
+
+| Формат | Части | Первая часть |
+|--------|-------|--------------|
+| 7-Zip | `.7z.001`, `.7z.002`, ... | `.7z.001` |
+| WinRAR | `.part1.rar`, `.part2.rar`, ... | `.part1.rar` |
+| ZIP split | `.z01`, `.z02`, ... + `.zip` | `.zip` |
+| Generic | `.001`, `.002`, ... | `.001` |
+
+**Ключевая особенность:** правый клик или двойной клик на **ЛЮБОЙ** части многотомного архива — менеджер автоматически находит и использует первую часть для распаковки. Не нужно вручную искать часть 1.
 
 ---
 
@@ -147,11 +163,11 @@ powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath
 
 | Цвет | Тип |
 |------|-----|
-| Голубой (Cyan) | Исполняемые (.exe .bat .ps1...) |
-| Зелёный | Текстовые (.txt .log .ini...) |
-| Синий | Медиа (.mp4 .jpg .mp3...) |
+| Голубой (Cyan) | Исполняемые (.exe .bat .ps1 .cmd ...) |
+| Зелёный | Текстовые (.txt .log .cfg .ini ...) |
+| Синий | Медиа (.mp4 .mkv .jpg .mp3 ...) |
 | Фиолетовый | APK пакеты |
-| Ярко-зелёный | Архивы (.zip .7z .rar...) |
+| Ярко-зелёный | Архивы (.zip .7z .rar ...) и части многотомных |
 | Белый | Папки |
 | Жёлтый | Отмеченные элементы |
 | Серый | Остальные файлы |
@@ -165,10 +181,8 @@ powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath
 | `.ps1` | Ключевые слова, `$переменные`, строки, `#комментарии`, операторы |
 | `.bat` `.cmd` | `rem`/`::`, `echo`, `%переменные%`, ключевые слова |
 | `.sh` `.bash` | Аналогично ps1 |
-| `.ini` `.cfg` `.conf` | `[секции]`, `ключ=`, `=значение`, `;комментарии` |
+| `.ini` `.cfg` `.conf` | `[секции]`, `ключ=значение`, `;комментарии` |
 | `.log` `.nfo` | ERROR (красный), WARN (оранжевый), INFO (зелёный), DEBUG (серый) |
-
-Максимум строк для подсветки: 3000 (для производительности).
 
 ---
 
@@ -183,9 +197,8 @@ powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath
 
 - Пути с пробелами и спецсимволами `[]` поддерживаются полностью
 - Кириллические имена файлов в архивах поддерживаются
-- Статус подключения ADB обновляется каждые 3 секунды
+- Статус подключения ADB (с серийным номером) обновляется каждые 3 секунды
 - Копирование в той же панели: PC→PC через `Copy-Item`, Android→Android через `adb shell cp`
-- Файл `$null` в папке скрипта не создаётся (исправлено перенаправление stderr)
 
 ---
 
@@ -203,9 +216,10 @@ powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath
 
 ---
 # Quas ADB Commander
+
 **Dual-panel file manager for Meta Quest / Android devices via ADB**
 
-Part of the [QUAS](https://github.com/Varsett/Quas) toolkit.
+Part of the [QUAS](https://github.com/Varsett/QuasADBCommander) toolkit.
 
 ---
 
@@ -214,7 +228,8 @@ Part of the [QUAS](https://github.com/Varsett/Quas) toolkit.
 - Dual-panel interface: PC (left) and Android (right)
 - Browse, copy, move, rename, delete files on both sides
 - Built-in text/script editor with syntax highlighting
-- Archive support (7z, zip, rar, gz, tar...) via 7z.exe
+- Archive support via 7z.exe (zip, 7z, rar, gz, tar, bz2, xz, cab, iso)
+- **Multipart archive support** (.7z.001/.002, .part1.rar/.part2.rar, .z01/.z02, .001/.002)
 - APK installation with automatic OBB copying
 - Media preview for Android files (video, photo, audio)
 - Search with wildcard support
@@ -236,7 +251,7 @@ Part of the [QUAS](https://github.com/Varsett/Quas) toolkit.
 
 ## Installation
 
-1. Place `adbfm.ps1` anywhere on your PC
+1. Place `adbcm.v8.25.ps1` anywhere on your PC
 2. Put `adb.exe`, `aapt2.exe`, `7z.exe`, `7z.dll` in the **same folder**
    - or use `-ToolsPath` parameter
    - or add to `%PATH%`
@@ -248,19 +263,19 @@ Part of the [QUAS](https://github.com/Varsett/Quas) toolkit.
 ## Launch
 
 ```batch
-powershell -ExecutionPolicy Bypass -File adbfm.ps1
+powershell -ExecutionPolicy Bypass -File adbcm.ps1
 ```
 
 With parameters:
 ```batch
-powershell -ExecutionPolicy Bypass -File adbfm.ps1 -ToolsPath "C:\Tools" -WorkDir "D:\Temp"
+powershell -ExecutionPolicy Bypass -File adbcm.ps1 -ToolsPath "C:\Tools" -WorkDir "D:\Temp"
 ```
 
 Recommended batch file launcher:
 ```batch
 set toolspath=%~dp0
 set workdir=%TEMP%
-powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath%" -WorkDir "%workdir%"
+powershell -ExecutionPolicy Bypass -File "%~dp0adbcm.ps1" -ToolsPath "%toolspath%" -WorkDir "%workdir%"
 ```
 
 ---
@@ -282,7 +297,7 @@ powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath
 | `Tab` | Switch active panel |
 | `Enter` / Double-click | Open folder / Run file / Enter archive |
 | `Space` | Toggle mark (yellow highlight) |
-| `*` (Numpad) | Mark ALL / Unmark ALL (toggle) |
+| `*` (Numpad Multiply) | Mark ALL / Unmark ALL (toggle) |
 | `Alt+X` | Exit |
 | `F9` | Jump to Android/data |
 | `F10` | Jump to Android/obb |
@@ -317,7 +332,7 @@ powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath
 | Open with default | Open with system app |
 | Install APK | Install APK + auto-copy OBB |
 | Copy | Mark + copy to system clipboard |
-| Paste | Paste (all directions: PC↔ADB, PC→PC, ADB→ADB) |
+| Paste | Paste (PC↔ADB, PC→PC, ADB→ADB) |
 | Unpack archive | Extract archive to PC or Android |
 | Pack selected | Pack marked items to `.7z` |
 
@@ -327,7 +342,7 @@ powershell -ExecutionPolicy Bypass -File "%~dp0adbfm.ps1" -ToolsPath "%toolspath
 
 Open archives by double-clicking or Enter — they appear as virtual folders.
 
-**Inside an archive:**
+### Inside an archive
 
 | Action | Result |
 |--------|--------|
@@ -335,13 +350,29 @@ Open archives by double-clicking or Enter — they appear as virtual folders.
 | `F5` (files marked) | Extract files flat (no folder structure) |
 | `F5` (folder marked) | Extract folder with its contents |
 | `*` then `F5` | Mark all + extract everything |
-| `[Close Archive]` | Exit archive or go up one level |
+| `[Close Archive]` | Exit archive or go up one level inside |
 
-**Context menu on archive file:**
+### Context menu on archive file
 - **Unpack archive** — extract ALL to chosen PC path (editable) or current Android folder (named after archive)
 - **Pack selected** — pack marked items to `.7z` in current folder
 
-**Supported:** `zip 7z rar gz tar bz2 xz cab iso tgz`
+### Supported formats
+`zip 7z rar gz tar bz2 xz cab iso tgz`
+
+---
+
+## Multipart Archives
+
+Multipart (split) archives are fully supported and colored the same as regular archives.
+
+| Format | Parts | First part |
+|--------|-------|------------|
+| 7-Zip | `.7z.001`, `.7z.002`, ... | `.7z.001` |
+| WinRAR | `.part1.rar`, `.part2.rar`, ... | `.part1.rar` |
+| ZIP split | `.z01`, `.z02`, ... + `.zip` | `.zip` |
+| Generic | `.001`, `.002`, ... | `.001` |
+
+**Key feature:** right-click or double-click on **ANY** part of a multipart archive — the manager automatically finds and uses the first part for extraction. No need to find part 1 manually.
 
 ---
 
@@ -349,14 +380,14 @@ Open archives by double-clicking or Enter — they appear as virtual folders.
 
 | Color | Type |
 |-------|------|
-| Cyan | Executables (.exe .bat .ps1...) |
-| Green | Text files (.txt .log .ini...) |
-| Blue | Media (.mp4 .jpg .mp3...) |
+| Cyan | Executables (.exe .bat .ps1 .cmd ...) |
+| Green | Text files (.txt .log .cfg .ini ...) |
+| Blue | Media (.mp4 .mkv .jpg .mp3 ...) |
 | Purple | APK packages |
-| Bright Green | Archives (.zip .7z .rar...) |
+| Bright Green | Archives (.zip .7z .rar ...) and multipart parts |
 | White | Directories |
-| Yellow | Marked items |
-| Gray | Other |
+| Yellow | Marked / selected items |
+| Gray | Other files |
 
 ---
 
@@ -374,7 +405,7 @@ Open archives by double-clicking or Enter — they appear as virtual folders.
 
 ## Media Preview (Android)
 
-Double-click video/image/audio on the Android panel to pull and open with system default app.
+Double-click video/image/audio on the Android panel to pull and open with the system default app.
 Files over **500 MB** require confirmation.
 
 ---
@@ -383,7 +414,7 @@ Files over **500 MB** require confirmation.
 
 - Paths with spaces and special characters `[]` are fully supported
 - Cyrillic filenames in archives are supported
-- ADB connection status updates every 3 seconds
+- ADB connection status updates every 3 seconds (serial number shown)
 - Same-side copy: PC→PC via `Copy-Item`, ADB→ADB via `adb shell cp`
 
 ---

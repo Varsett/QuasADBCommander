@@ -2125,7 +2125,7 @@ $tx.Add_TextChanged({
 
 
 # MAIN FORM
-$form=New-Object System.Windows.Forms.Form;$form.Text="Quas ADB Commander v10.5"
+$form=New-Object System.Windows.Forms.Form;$form.Text="Quas ADB Commander  v10.6"
 $form.Size="1060,860";$form.MinimumSize="720,620";$form.BackColor=$bgForm
 $form.KeyPreview=$true;$form.StartPosition="CenterScreen";$form.FormBorderStyle="Sizable"
 $form.GetType().GetProperty("DoubleBuffered",[System.Reflection.BindingFlags]::Instance -bor [System.Reflection.BindingFlags]::NonPublic).SetValue($form,$true,$null)
@@ -4843,7 +4843,7 @@ function Go-Data{Enter-AndroidFolder "/storage/emulated/0/Android/data"}
 function Go-Obb{Enter-AndroidFolder "/storage/emulated/0/Android/obb"}
 function Show-Help{
     $d=New-Object System.Windows.Forms.Form
-    $d.Text="Quas ADB Commander v10.5 - $(T 'hlp_title_suffix')"
+    $d.Text="Quas ADB Commander  v10.6 - $(T 'hlp_title_suffix')"
     $d.Size="1020,680";$d.MinimumSize="900,600"
     $d.BackColor=$bgForm;$d.ForeColor=$clrText
     $d.FormBorderStyle="Sizable";$d.StartPosition="CenterParent";$d.KeyPreview=$true
@@ -4899,7 +4899,7 @@ function Show-Help{
     # LEFT
     $L.SelectionFont=New-Object System.Drawing.Font("Consolas",12,[System.Drawing.FontStyle]::Bold)
     $L.SelectionColor=[System.Drawing.Color]::FromArgb(212,188,82)
-    $L.AppendText(" Quas ADB Commander v10.5`r`n")
+    $L.AppendText(" Quas ADB Commander  v10.6`r`n")
     $L.SelectionFont=$fN;$L.SelectionColor=$cD
     $L.AppendText(" $(T 'hlp_subtitle')`r`n`n")
     $L.AppendText(" $(T 'hlp_credits1')`r`n")
@@ -5009,7 +5009,7 @@ function Show-Help{
     &$NN $R ""
     &$NN $R (T "hlp_tools_example") $cD
     $R.SelectionColor=$cG
-    $R.AppendText(" powershell -File adbcm.v10.5.ps1 -ToolsPath C:\Tools -lang RU`r`n")
+    $R.AppendText(" powershell -File adbcm.v10.6.ps1 -ToolsPath C:\Tools -lang RU`r`n")
     &$SH $R (T "hlp_h_media")
     &$NN $R (T "hlp_media_1")
     &$NN $R (T "hlp_media_2")
